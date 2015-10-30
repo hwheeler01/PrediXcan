@@ -154,7 +154,7 @@ for(i in 1:length(explist)){
     ### output best shrunken betas for PrediXcan
     ### adjust betas by dividing by the genotype sd, so don't have to scale genotypes in PrediXcan
     bestbetalist <- names(bestbetas)
-    bestgenos <- X[,intersect(colnames(X),bestbetalist)] ### pull best-SNP genotypes
+    bestgenos <- X[,intersect(colnames(X),bestbetalist),drop=FALSE] ### pull best-SNP genotypes
     sigma = apply(bestgenos,2,sd)
     sigadjweights = bestbetas/sigma
 
