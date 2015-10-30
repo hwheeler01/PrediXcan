@@ -152,9 +152,14 @@ for(i in 1:length(explist)){
 
     
     ### output best shrunken betas for PrediXcan
+    ### adjust betas by dividing by the genotype sd, so don't have to scale genotypes in PrediXcan
     bestbetalist <- names(bestbetas)
+    bestgenos <- X[,intersect(colnames(X),bestbetalist)] ### pull best-SNP genotypes
+    sigma = apply(bestgenos,2,sd)
+    sigadjweights = bestbetas/sigma
+
     bestbetainfo <- bim[bestbetalist,]
-    betatable<-as.matrix(cbind(bestbetainfo,bestbetas))
+    betatable<-as.matrix(cbind(bestbetainfo,sigadjweights))
     betafile<-cbind(genename,betatable[,2],betatable[,5],betatable[,6],betatable[,7]) ##output "gene","SNP","refAllele","effectAllele","beta"
     write(t(betafile),file=workingweight,ncolumns=5,append=T,sep="\t") # t() necessary for correct output from write() function
 
